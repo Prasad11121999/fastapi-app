@@ -1,6 +1,20 @@
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 
 app= FastAPI()
+
+origins =[
+    "http://localhost",
+    "http://localhost:3000"
+]
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials =True,
+    allow_methods = ["GET","POST","PUT","DELETE"],
+    allow_headers = ["*"]
+)
+
 '''
 Data
 '''
@@ -11,6 +25,8 @@ home_page_data =[
             "websiteName":"My Portfolio",
             "message":"Welcome to my Knowledge world! Let's start knowledge sharing.",
             "mobileNumber":7820923701,
+            "email":"prasadsawant11121999@gmail.com",
+            "password":"Prasad@123",
             "candidateFirstName":"Prasad",
             "candidateMiddleName":"Ratnakant",
             "candidateLastName":"Sawant",
@@ -60,8 +76,7 @@ home_page_data =[
                     "percent":0,
                     "CGPA":6.21
                 }
-            ],
-            "place":"Mumbai goregaon gat kr.8 ....SEBC...SRFP"
+            ]
         },
         {
             "profileId":2,
@@ -72,6 +87,8 @@ home_page_data =[
             "candidateFirstName":"Divya",
             "candidateMiddleName":"Kashiram",
             "candidateLastName":"Wairkar",
+            "email":"divyawairkar2010@gmail.com",
+            "password":"Divya@123",
             "address":"1245, Varad, Malvan",
             "district":"Sindhudurg",
             "state":"Maharashtra",
@@ -119,7 +136,6 @@ home_page_data =[
                     "CGPA":6.21
                 }
             ]
-            #"place":"Mumbai goregaon gat kr.8 ....SEBC...SRFP"
         }
     ]
 
@@ -131,3 +147,11 @@ async def read_root():
 async def resumeData(profileId:int):  
     data = [d for d in home_page_data if d.get('profileId')== profileId]
     return data
+
+@app.get("/login/")
+async def login(email:str,password:str):  
+    data = [d for d in home_page_data if d.get('email')== email and d.get('password')==password]
+    if (len(data))>0:
+        return {"isAuthenticated":True,"email":email}
+    else:
+        return {"isAuthenticated":False,"email": ""}

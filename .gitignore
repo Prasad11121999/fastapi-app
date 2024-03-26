@@ -1,1 +1,2 @@
-fastAPIenv\ 
+/fastAPIenv
+/__pycache__
