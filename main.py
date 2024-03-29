@@ -152,6 +152,6 @@ async def resumeData(profileId:int):
 async def login(email:str,password:str):  
     data = [d for d in home_page_data if d.get('email')== email and d.get('password')==password]
     if (len(data))>0:
-        return {"isAuthenticated":True,"email":email}
+        return {"isAuthenticated":True,"email":email,"profileId":data.get('profileId')}
     else:
-        return {"isAuthenticated":False,"email": ""}
+        return {"isAuthenticated":False,"email": "","profileId":0}
